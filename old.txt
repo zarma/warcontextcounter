@@ -1,0 +1,65 @@
+package org.warcontext;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
+public class test extends JFrame
+{
+ String s;
+ ImageIcon img;
+ Image image;
+ JPanel p;
+ JLabel label;
+ JLabel text;
+ int imageWidth;
+ int imageheight;
+ public int getWidth() {
+	return imageWidth;
+}
+
+public int getHeight() {
+	return imageheight;
+}
+
+public test()
+     {
+
+	 
+     s = "123456789";
+     Font f = new Font("Serif",Font.BOLD,12);
+     text = new JLabel("Hi");
+     text.setFont(f);
+    
+     MediaTracker mt = new MediaTracker(this);
+     image = Toolkit.getDefaultToolkit().createImage("g:\\test.png");
+     mt.addImage(image,0);
+     try{mt.waitForID(0);}catch(InterruptedException ie){}
+     imageWidth = image.getWidth(null);
+     imageheight = image.getHeight(null);
+     BufferedImage bimg = new BufferedImage(imageWidth, imageheight, BufferedImage.TYPE_INT_RGB);
+     bimg.createGraphics().drawImage(image, 0, 0, this);
+     bimg.getGraphics().setFont(f);
+     bimg.getGraphics().drawString(s,250,100);
+     
+     File outputFile = new File("image.png");
+     ImageIO.write(bimg, "PNG", outputFile);
+
+     
+     img = new ImageIcon(bimg);
+     label = new JLabel(img);
+     p = new JPanel();
+     p.add(label);
+     getContentPane().add(p);
+ }
+ public static void main(String args[])
+     {
+     test tt = new test();
+     tt.setDefaultCloseOperation(EXIT_ON_CLOSE);
+     tt.setSize(750,900);
+     tt.setVisible(true);
+ }
+}
