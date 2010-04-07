@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
@@ -26,6 +25,8 @@ public class go extends JFrame implements ActionListener {
 	int imageheight;
 	Graphics2D g2d;
 	Data data;
+	int colorb, coloropfor, colorblue;
+	Font font2 = new Font("Arial", Font.PLAIN, 12);
 
 	public int getWidth() {
 		return imageWidth;
@@ -58,6 +59,9 @@ public class go extends JFrame implements ActionListener {
 
 		g2d.setFont(f);
 		// g2d.drawString(s, 165, 265);
+		colorb = bimg.getRGB(176, 246); 
+		coloropfor = bimg.getRGB(382, 246);
+		colorblue = bimg.getRGB(198, 120);
 
 		img = new ImageIcon(bimg);
 		label = new JLabel(img);
@@ -70,8 +74,8 @@ public class go extends JFrame implements ActionListener {
 
 	}
 
-	private void computescore(Integer x, Integer y, Integer valx, Integer valy) {
-		data.setPoints(valx, x);
+	private void computescore( Integer y, Integer valy) {
+		
 		data.setPoints(valy, y);
 	}
 
@@ -91,11 +95,11 @@ public class go extends JFrame implements ActionListener {
 		Integer x = 0;
 		Integer depx = 0;
 		Integer oldx = 0;
-		Integer y[] = new Integer[4];
+		Integer y[] = new Integer[3];
 		y[0] = 262;
 		y[1] = 317;
 		y[2] = 374;
-		y[3] = 427;
+		
 		//
 		// Tableau
 		//
@@ -112,22 +116,14 @@ public class go extends JFrame implements ActionListener {
 			while (st.hasMoreElements()) {
 
 				val = st.nextToken();
-				String[] valsplit = val.split("/");
 				if (!val.contentEquals(sNull)) {
 					oldx = x;
-					if (val.length() == 4) {
+					if (val.length() == 3) {
 						x += 7;
 					}
 					g2d.setColor(Color.RED);
-					g2d.drawString(valsplit[0], x, y[noline]);
-					g2d.setColor(Color.BLACK);
-					x += valsplit[0].length() * 13;
-					g2d.drawString("/", x, y[noline]);
-					g2d.setColor(Color.BLUE);
-					x += 8;
-					g2d.drawString(valsplit[1], x, y[noline]);
-					computescore(noCol, noline, Integer.valueOf(valsplit[1]),
-							Integer.valueOf(valsplit[0]));
+					g2d.drawString(val, x, y[noline]);
+					computescore( noline, Integer.valueOf(val));
 					
 
 					x = oldx;
@@ -137,16 +133,42 @@ public class go extends JFrame implements ActionListener {
 			}
 		}
 		// Draw total team points and bar chart
-		Integer xpos[] = new Integer[4];
-		xpos[0] = 55;
-		xpos[1] = 169;
-		xpos[2] = 270;
-		xpos[3] = 383;
+		Integer xpos[] = new Integer[3];
+		Integer maxpoint = 200;
+		
+		xpos[0] = 72;
+		xpos[1] = 186;
+		xpos[2] = 300;
+		
+		int colorb = bimg.getRGB(176, 246); 
+		int coloropfor = bimg.getRGB(382, 246);
+		int colorblue = bimg.getRGB(198, 120);
 		for (int i = 0; i < data.points.length; i++) {
-			g2d.drawString(String.valueOf(data.getPoints(i)), 432, y[i]);
-			g2d.fillRect(xpos[i],730-pointtopixel(data.getPoints(i)),  54, pointtopixel(data.getPoints(i)));
+			g2d.setColor(new Color(colorb));
+			g2d.fillRect(xpos[i],658-maxpoint,  54, maxpoint);
+			g2d.setColor(Color.BLACK);
+			g2d.drawRect(xpos[i]-1,658-maxpoint-1,  55, maxpoint+1);
+			
+			g2d.setColor(new Color(colorblue));
+			g2d.drawString(String.valueOf(data.getPoints(i)), 362, y[i]);
+			g2d.setColor(new Color(coloropfor));
+			g2d.fillRect(xpos[i],658-maxpoint,  54, data.getPoints(i));
+			
+			
+			
 			
 		}
+		
+		g2d.setColor(Color.BLACK);
+		g2d.setFont(font2);
+		for (int i = 0; i < data.points.length; i++) {		
+			g2d.drawLine(xpos[i], 658-(maxpoint/2), xpos[i]+54, 658-(maxpoint/2));
+			g2d.drawString("200", xpos[i] - 30, 658-maxpoint+6);
+			g2d.drawString("100", xpos[i] - 30, 658-(maxpoint/2)+6);
+						
+		}
+		
+	
 
 
 		

@@ -9,7 +9,7 @@ public class Data {
 
 	BufferedReader br;
 	FileReader fr;
-	private int size = 4;
+	private int size = 3;
 	String[] lines = new String[size];
 	Integer[] points = new Integer[size];
 
