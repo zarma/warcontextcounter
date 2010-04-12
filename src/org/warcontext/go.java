@@ -161,8 +161,10 @@ public class go extends JFrame implements ActionListener {
 		
 		g2d.setColor(Color.BLACK);
 		g2d.setFont(font2);
-		for (int i = 0; i < data.points.length; i++) {		
+		for (Integer i = 0; i < data.points.length; i++) {		
 			g2d.drawLine(xpos[i], 658-(maxpoint/2), xpos[i]+54, 658-(maxpoint/2));
+			Integer temp = i+1;
+			g2d.drawString("F".concat(temp.toString()), xpos[i] + 18, 658-maxpoint-6);
 			g2d.drawString("200", xpos[i] - 30, 658-maxpoint+6);
 			g2d.drawString("100", xpos[i] - 30, 658-(maxpoint/2)+6);
 						
